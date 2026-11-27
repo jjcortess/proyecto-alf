@@ -1,4 +1,5 @@
 import sys
+import validadores
 from constantes import TIEMPO_ESTANDAR, COORD_ESTANDAR
 
 
@@ -7,11 +8,32 @@ def normaliza(fichero, f1, f2):
 
 
 def filtrar_telefono(fichero, telefono):
-    pass
-
+    telefono = telefono.strip()
+    try:
+        with open(fichero, "r", encoding="utf-8") as f:
+            for linea in f:
+                linea = linea.strip()
+                if validadores.validar_linea(linea) is None:
+                    continue
+                telefono_linea = linea.split(";")[0]
+                if telefono_linea == telefono:
+                    print(linea)
+    except:
+        sys.exit(1)
 
 def filtrar_nif(fichero, nif):
-    pass
+    nif = nif.strip()
+    try:
+        with open(fichero, "r", encoding="utf-8") as f:
+            for linea in f:
+                linea = linea.strip()
+                if validadores.validar_linea(linea) is None:
+                    continue
+                nif_linea = linea.split(";")[1]
+                if nif_linea == nif:
+                    print(linea)
+    except:
+        sys.exit(1)
 
 
 def filtrar_intervalo(fichero, desde, hasta):
