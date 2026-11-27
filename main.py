@@ -18,7 +18,7 @@ def filtrar_telefono(fichero, telefono):
                 telefono_linea = linea.split(";")[0]
                 if telefono_linea == telefono:
                     print(linea)
-    except:
+    except Exception:
         sys.exit(1)
 
 def filtrar_nif(fichero, nif):
@@ -32,13 +32,26 @@ def filtrar_nif(fichero, nif):
                 nif_linea = linea.split(";")[1]
                 if nif_linea == nif:
                     print(linea)
-    except:
+    except Exception:
         sys.exit(1)
 
 
 def filtrar_intervalo(fichero, desde, hasta):
-    pass
-
+    desde = validadores.validar_tiempo(desde)
+    hasta = validadores.validar_tiempo(hasta)
+    if desde is None or hasta is None:
+        sys.exit(1)
+    try:
+        with open(fichero, "r", encoding="utf-8") as f:
+            for linea in f:
+                linea = linea.strip()
+                linea_validada = validadores.validar_linea(linea)
+                if linea_validada is None:
+                    continue
+                if desde < linea_validada[2] < hasta:
+                    print(linea)
+    except Exception:
+        sys.exit(1)
 
 def main():
     if len(sys.argv) < 3:
